@@ -1,0 +1,2 @@
+db.games.update({gameArray:{$elemMatch:{tournamentName:'Pubg1'}}},{ $set: { 'gameArray.$.maxPeople' : -1 } })
+db.games.find({});
