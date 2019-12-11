@@ -5,7 +5,11 @@ const games=require('../models/gamesManipulation');
 
 
 routing.get('/setup', (req, res) => {
-        setup.setupGames();
+        setup.setupGames().then(data=>{
+            res.send("data inserted successfully");
+        }).catch(err=>{
+            throw err;
+        })
 });
 
 // {
@@ -15,11 +19,21 @@ routing.get('/setup', (req, res) => {
 //     "creatorId":"C1001",
 //     "tournamentName":"Fifa 1"
 //  }
+routing.get('/tournamentCheck/:gameName/:tournamentName',(req,res,next)=>{
+    games.checkTournament(req.params.gameName,req.params.tournamentName).then(data=>{
+        if(data=="error"){
+            res.send("The tournament Name Already Exists");
+        }
+    }).catch(err=>{
+        throw err;
+    })
+})
 
 routing.post('/addGames',(req,res,next)=>{
     //console.log("data from req",req.body.tournamentName);
-    
     games.addGames(req.body).then(data=>{
+        //console.log("huihu",data);
+        
             if(data){
                 res.send(data);
             }
@@ -38,7 +52,7 @@ routing.get('/getGames/:gameName',(req,res,next)=>{
         throw err;
     })
 })
-
+///bookTournaments/PUBG/PUBG1
 routing.get('/bookTournaments/:gameName/:tournamentName',(req,res,next)=>{
     console.log(req.params.gameName, req.params.tournamentName);
     games.bookTournaments(req.params.gameName,req.params.tournamentName).then(data=>{

@@ -9,5 +9,5 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use('/', router);
 app.listen(3000);
-console.log(' RESTful API server started on: 3000');
+console.log(' Restful Api server started on: 3000');
 
