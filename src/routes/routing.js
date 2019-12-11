@@ -54,6 +54,8 @@ routing.get('/tournamentCheck/:gameName/:tournamentName',(req,res,next)=>{
     games.checkTournament(req.params.gameName,req.params.tournamentName).then(data=>{
         if(data=="error"){
             res.send("The tournament Name Already Exists");
+        }else{
+            res.send("Game can be added");
         }
     }).catch(err=>{
         throw err;
@@ -74,8 +76,7 @@ routing.post('/addGames',(req,res,next)=>{
     //console.log("data from req",req.body.tournamentName);
     games.addGames(req.body).then(data=>{
         //console.log("huihu",data);
-        
-            if(data){
+        if(data){
                 res.send(data);
             }
     }).catch(err=>{

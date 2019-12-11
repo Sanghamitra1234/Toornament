@@ -33,7 +33,6 @@ function createUser(){
         let name=random_name();
         if(dummyData.length==0){
             let pass=name+digits[rand(digits.length)]
-            //console.log("userName ", name, " password", pass);
             let encryptedPassword=md5(pass);
             let obj={
                 userName:name,
@@ -58,10 +57,7 @@ function createUser(){
     return dummyData;
     
 }
-//createUser();
-
-  
-    function createDb() {
+ function createDb() {
         var gamenames = ["PUBG","MLBB","FIFA 20"]
         var gamename = gamenames[rand(gamenames.length)]
         var gamename = "FIFA 20" //Fill with one name 

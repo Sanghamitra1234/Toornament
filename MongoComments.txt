@@ -26,7 +26,10 @@ db.games.find({$and:[{"gameName":"PUBG"},
 
 db.games.aggregate({ $unwind:"$gameArray" })
 db.games.aggregate({ $unwind:"$gameArray"},{$match:{'gameArray.tournamentName':"PUBG1"}})
-//,{$match:{tournamentName:"PUBG1"}}
+
+
+db.games.find({$and:[{"gameName":"PUBG"},
+        {"gameArray":{$elemMatch:{"tournamentName":"PUBG1070"}}}]})
 
 // "userName" : "Dean Rulnick",
 // 	"password" : "Dean Rulnick!123"
@@ -34,3 +37,8 @@ db.games.aggregate({ $unwind:"$gameArray"},{$match:{'gameArray.tournamentName':"
 db.users.find().pretty()
 
 db.users.find({"userName": "D"}).pretty()
+
+
+db.games.aggregate({$match:{'gameName':'PUBG'}},{ $unwind:"$gameArray" },{
+      $count: "Total_Count"
+    });

@@ -78,7 +78,7 @@ gamesArr.checkTournament=(gameName,tournamentName)=>{
     return connection.getCollection().then(model=>{
         return model.find({$and:[{"gameName":gameName},
         {"gameArray":{$elemMatch:{"tournamentName":tournamentName}}}]}).then(data=>{
-            if(!data){
+            if(data.length>=1){
                 return "error";
             }else{
                 return "OK";
@@ -95,8 +95,7 @@ gamesArr.addGames=(req)=>{
     return connection.getCollection().then(model=>{
        /// console.log("req",req.tournamentDesc);
         
-        var obj=
-                    {   
+        var obj={   
                         
                         "tournamentName":req.tournamentName,
                         "tournamentDesc":req.tournamentDesc,
@@ -104,17 +103,25 @@ gamesArr.addGames=(req)=>{
                         "maxPeople":req.maxPeople,
                         "creatorId":req.creatorId
                     }
-        
-    return model.update({'gameName':req.gameName},{$push:{gameArray:obj}}).then(data=>{
-            if(data.nModified>=1){
-                //console.log(data);
-                return "Tournament Successfully added !! ";
-                //res.json({message:"Data is successfully added !!"})
+return model.find(
+    {$and:[{"gameName":req.gameName},
+        {"gameArray":{$elemMatch:{"tournamentName":req.tournamentName}}}]})
+        .then(dataCheck=>{
+            if(dataCheck.length==0){
+                return model.update({'gameName':req.gameName},{$push:{gameArray:obj}}).then(data=>{
+                    if(data.nModified>=1){
+                        //console.log(data);
+                        return {"message":"Tournament Successfully added !! "};
+                        //res.json({message:"Data is successfully added !!"})
+                    }
+                }).catch(err=>{
+                    throw err;
+                })
+            }else{
+                return {"message":"Tournament already exists"}
             }
-        }).catch(err=>{
-            throw err;
-        })
     })
+})
 }
 gamesArr.getGamesonNames=(gameName)=>{
     return connection.getCollection().then(model=>{
@@ -131,8 +138,10 @@ gamesArr.getGamesonNames=(gameName)=>{
 
 gamesArr.bookTournaments=(gameName,tournamentName)=>{
     return connection.getCollection().then(model=>{
-        return model.aggregate([{ $unwind:"$gameArray"},
-        {$match:{'gameArray.tournamentName':tournamentName}}]).then(data=>{
+        return model.aggregate([
+            {$match:{'gameName':gameName}},
+            { $unwind:"$gameArray"},
+            {$match:{'gameArray.tournamentName':tournamentName}}]).then(data=>{
             //console.log("data from aggregation",data[0]['gameArray']['maxPeople']);
             let maxCount=data[0]['gameArray']['maxPeople'];
             let newMax=maxCount-1;
