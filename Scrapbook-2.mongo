@@ -1,3 +1,0 @@
-db.games.aggregate({ $unwind:"$gameArray" })
-db.games.aggregate({ $unwind:"$gameArray"},{$match:{'gameArray.tournamentName':"PUBG1"}})
-//,{$match:{tournamentName:"PUBG1"}}

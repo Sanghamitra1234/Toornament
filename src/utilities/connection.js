@@ -5,6 +5,11 @@ const url="mongodb://localhost:27017/toornament";
 
 mongoose.Promise=global.Promise;
 
+const userSchema=Schema({
+    userName:String,
+    password:String
+},{collection : 'users',timestamps:true})
+
 const gamesSchema=Schema({
     gameName:String,
     gameArray:[
@@ -20,6 +25,16 @@ const gamesSchema=Schema({
 },{collection : 'games',timestamps:true});
 
 let connection={};
+
+connection.getUsers=()=>{
+    return mongoose.connect(url).then(database=>{
+        return database.model('users',userSchema)
+    }).catch(error=>{
+        let err=new Error(error+" Could not connect to the database ");
+        err.status=500;
+        throw err;
+    });
+}
 
 connection.getCollection=()=>{
     return mongoose.connect(url).then(database=>{

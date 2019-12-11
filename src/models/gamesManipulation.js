@@ -1,6 +1,79 @@
 const connection=require('../utilities/connection');
 
+// const Cryptr = require('cryptr');
+// const cryptr = new Cryptr('myTotalySecretKey');
+
+const md5= require('md5');
+
 let gamesArr={};
+
+//userName  Rubin Benno  password Rubin Benno@1234
+
+gamesArr.register=(userName,password)=>{
+    return connection.getUsers().then(model=>{
+        return model.find({userName:userName}).then(data=>{
+            if(data.length>=1){
+                return {"message":"Oops !!! Username already exists!!"};
+            }else{
+                let encryptedPass=md5(password);
+                var obj=
+                    {   "userName":userName,
+                        "password":encryptedPass
+                    }
+                return model.insertMany(obj).then(data=>{
+                    // console.log(data);
+                    if(data.length>=1){
+                        return {"message":"You have successfully registered!!"}
+                    }
+                }).catch(err=>{
+                    throw err;
+                })
+            }
+        }).catch(err=>{
+            throw err;
+        })
+    }).catch(err=>{
+        throw err;
+    })
+}
+gamesArr.login=(userName,password)=>{
+    return connection.getUsers().then(model=>{
+        return model.find({userName:userName}).then(data=>{
+            //console.log(data);
+            if(data.length>=1){
+                let passWordEncrypted=md5(password);
+                if(passWordEncrypted==data[0]['password']){
+                    
+                    return {"message":"You have login successfully!!"};
+                }else{
+                    return {"message":"Password is wrong"};
+                }
+            }else{
+                let err="UserName doesnt exist";
+                return {"message":err};
+            }
+        }).catch(err=>{
+            throw err;
+        })
+    }).catch(err=>{
+        throw err;
+    })
+}
+gamesArr.updatePassword=(userName,updatePass)=>{
+    return connection.getUsers().then(model=>{
+        let updatedEncryptedPass=md5(updatePass);
+            return model.update({userName:userName},
+                {$set:{password:updatedEncryptedPass}}).then(data=>{
+                    if(data.nModified>=1){
+                        return {"message":"Password updated successfully"}
+                    }
+                }).catch(err=>{
+                    throw err;
+            })
+    }).catch(err=>{
+        throw err;
+    })
+}
 gamesArr.checkTournament=(gameName,tournamentName)=>{
     return connection.getCollection().then(model=>{
         return model.find({$and:[{"gameName":gameName},
@@ -79,25 +152,6 @@ gamesArr.bookTournaments=(gameName,tournamentName)=>{
         })
     })
 }
-// gamesArr.bookTournaments=(gameName,tournamentName)=>{
-    
-//       return model.findOne({"gameArray.tournamentName":tournamentName}).then(data=>{
-//             //console.log("data",data['gameArray'][0]['maxPeople']);
-//             if(data['gameArray'][0]['maxPeople']>=1){
-//                 let newNo=data['gameArray'][0]['maxPeople']-1;
-//                 //grades: { $elemMatch: { grade: { $lte: 90 }, mean: { $gt: 80 } }
-//                 return model.update({gameArray:{$elemMatch:{tournamentName:tournamentName}}},{ $set: { "gameArray.$.maxPeople" : newNo } }).then(data=>{
-//                     console.log("adac",data);
-//                     if(data.nModified==1){
-//                         return {"message":"You have registered successfully!!"};
-//                     }
-//                 })
-//             }else{
-//                 let err=new Error("Sorry the game is already full !! ");
-//                 throw err;
-//             }
-//         })
-//     }
 
 
 

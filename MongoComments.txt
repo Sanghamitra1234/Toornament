@@ -20,4 +20,17 @@ db.games.update({'gameName':'PUBG'},{$push:{gameArray:{ "tournamentDesc":"sab kh
     "creatorId":"C1001",
     "tournamentName":"PUBG300"}}})
 
-db.games.find({$and:[{"gameName":"PUBG"},{"gameArray":{$elemMatch:{"tournamentName":"PUBG22"}}}]})
+db.games.find({$and:[{"gameName":"PUBG"},
+{"gameArray":{$elemMatch:{"tournamentName":"PUBG22"}}}]})
+
+
+db.games.aggregate({ $unwind:"$gameArray" })
+db.games.aggregate({ $unwind:"$gameArray"},{$match:{'gameArray.tournamentName':"PUBG1"}})
+//,{$match:{tournamentName:"PUBG1"}}
+
+// "userName" : "Dean Rulnick",
+// 	"password" : "Dean Rulnick!123"
+
+db.users.find().pretty()
+
+db.users.find({"userName": "D"}).pretty()
