@@ -15,12 +15,10 @@
 1.1 FIRST DB WITH INDEXING ON TOURNAMNETNAME
 
      1.To book the tournament
-    db.games.createIndex({'gameArray.tournamentName':1})
+    db.games.createIndex({'gameName':1,'gameArray.tournamentName':1})
     db.games.explain("executionStats").aggregate([{$match:{'gameName':'PUBG'}},   
     { $unwind:"$gameArray"},{$match:{'gameArray.tournamentName':'PUBG1'}}])  ===> RESULTS 
-                                                                                    "executionTimeMillis" : 530,
-                                                                                    "totalKeysExamined" : 0,
-                                                                                    "totalDocsExamined" : 3,
+                                                                                    "executionTimeMillisEstimate" : 92
 
 
 
@@ -39,9 +37,9 @@
                                                                           "totalDocsExamined" : 299997
 
 2.2 SECOND DB WITH INDEXING
-     1.To get the games
-     db.gamesTest.createIndex( { 'gameName': 1 } )
-     db.gamesTest.find({'gameName':'PUBG'}).explain("executionStats")   ===> RESULTS 
+    1.To get the games
+    db.gamesTest.createIndex( { 'gameName': 1 } )
+    db.gamesTest.find({'gameName':'PUBG'}).explain("executionStats")   ===> RESULTS 
                                                                             "executionTimeMillisEstimate" : 87 
     2.To book the tournament
     db.gamesTest.createIndex( { 'gameName': 1,"tournamentName":1 } )
