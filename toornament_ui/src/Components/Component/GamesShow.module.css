@@ -1,0 +1,53 @@
+.Container{
+    display: flex;
+    border-spacing: 2px;
+    flex-direction: row;
+    background-color:gray;
+    box-sizing: border-box;
+    box-shadow: 1em;
+    border: 10px solid indigo;
+}
+.card{
+  border: 10px solid indigo;
+  padding: 20px;
+}
+
+.cardTitle{
+  
+    font-size: 2em;
+    font-family: 'IM Fell Great Primer';
+    position: relative;
+    color: #fff;
+}
+.cardText{
+  font-family: 'IM Fell Great Primer';
+}
+  .cardTitle:before {
+      position: absolute;
+      left: -.03em;
+      top: .03em;
+      color: #ccc;
+      background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAADCAYAAABWKLW/AAAAFUlEQVQIW2NkQAKMIPZ/IGAEAWQZAE5lBATogF4qAAAAAElFTkSuQmCC);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      z-index: -1;
+    }
+
+
+/* Button */
+.btn {
+  align-self: center;
+  font-size: 1.15em;
+  font-weight: 700;
+  line-height: 1em;
+  color: #222;
+  background: #5DC8CD;
+  height: 45px;
+  border-radius: 3px;
+  /* color: #FFF;
+  border-radius: 5px;
+  transition: all 0.2s ; */
+  }
+.btn:hover {
+    background: #01939A;
+  }

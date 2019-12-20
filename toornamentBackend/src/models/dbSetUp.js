@@ -60,10 +60,10 @@ function createUser(){
  function createDb() {
         var gamenames = ["PUBG","MLBB","FIFA 20"]
         var gamename = gamenames[rand(gamenames.length)]
-        var gamename = "FIFA 20" //Fill with one name 
+        var gamename = "MLBB" //Fill with one name 
         var xarr = []
             
-        for( var i=1;i<100;i++){  
+        for( var i=1;i<100000;i++){  
             var tournamentDescArray = ["Best Game Ever","Too comepetetive","Hard Game play","Hardcore game","Best match you will ever find","fight for life"]
             var tournamentName = gamename + i.toString()
             var tournamentDesc = tournamentDescArray[rand(tournamentDescArray.length)]

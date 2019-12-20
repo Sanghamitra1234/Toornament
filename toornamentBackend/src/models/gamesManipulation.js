@@ -123,11 +123,14 @@ return model.find(
     })
 })
 }
-gamesArr.getGamesonNames=(gameName)=>{
+gamesArr.getGamesonNames=(gameName,page)=>{
     return connection.getCollection().then(model=>{
-        return model.find({'gameName':gameName}).then(data=>{
+        let pageLimitSize=20;
+        let start=page+((page-1)*pageLimitSize)-1;
+        
+        return model.find({'gameName':gameName},{gameArray:{$slice:[start,21]}}).then(data=>{
             if(data.length>=1){
-                console.log(data);
+               //console.log(data[0]['gameArray'].length);
                 return data;
             }
         }).catch(err=>{

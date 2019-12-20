@@ -83,10 +83,10 @@ routing.post('/addGames',(req,res,next)=>{
         throw err;
     })
 });
-routing.get('/getGames/:gameName',(req,res,next)=>{
-    console.log("gameName",req.params.gameName);
-    
-    games.getGamesonNames(req.params.gameName).then(data=>{
+routing.get('/getGames/:gameName/:page',(req,res,next)=>{
+   //console.log("gameName",req.params.gameName);
+    //let n=parseInt
+    games.getGamesonNames(req.params.gameName,parseInt(req.params.page)).then(data=>{
         if(data){
             res.send(data);
         }
